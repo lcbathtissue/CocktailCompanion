@@ -1,41 +1,70 @@
-import requests, json, jsonify, random
+import requests, json, jsonify, random, os, logging, datetime
 from flask import Flask, render_template, request
 
 # UTILITY FUNCTIONS
 def save_JSON(filename, data):
-    with open(f"json/{filename}", 'w') as f:
+    directory = "json"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    with open(f"{directory}/{filename}", 'w') as f:
         json.dump(data, f, indent=4)
+
+def start_logger():
+    logger = logging.getLogger('API_call_logger')
+    logger.setLevel(logging.DEBUG)
+
+    file_handler = logging.FileHandler('API_calls.log')
+    file_handler.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    return logger
+logger = start_logger()
+
+def log_API_call(logger, call_type, query, content):
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    logger.info(f'[{current_time}] API call made of type={call_type}\nquery={ascii(query)}\ncontent={ascii(content)}')
 
 # 'COCKTAIL DB' API FUNCTIONS
 def search_cocktail_by_name(name):
+    global logger
     url = "https://www.thecocktaildb.com/api/json/v1/1/search.php"
     params = {"s": name}
     response = requests.get(url, params=params)
     data = response.json()
     save_JSON('search_cocktail_by_name.json', data)
+    log_API_call(logger, "search_cocktail_by_name", name, data)
     return data
 
 def search_ingredient_by_name(name):
+    global logger
     url = "https://www.thecocktaildb.com/api/json/v1/1/search.php"
     params = {"i": name}
     response = requests.get(url, params=params)
     data = response.json()
     save_JSON('search_ingredient_by_name.json', data)
+    log_API_call(logger, "search_ingredient_by_name", name, data)
     return data
 
 def search_cocktail_by_ID(id):
+    global logger
     url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php"
     params = {"i": id}
     response = requests.get(url, params=params)
     data = response.json()
     save_JSON('search_cocktail_by_ID.json', data)
+    log_API_call(logger, "search_cocktail_by_ID", id, data)
     return data
 
 def search_random_cocktail():
+    global logger
     url = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
     response = requests.get(url)
     data = response.json()
     save_JSON('search_random_cocktail.json', data)
+    log_API_call(logger, "search_random_cocktail", "search_random_cocktail", data)
     return data
 
 app = Flask(__name__)
@@ -47,24 +76,23 @@ def homepage():
     if request.method == 'POST':
         query_type = request.form['search_option']
         query = request.form['search_term']
+        # print(f"\n\nquery_type={query_type}\n\n")
+        # print(f"\n\nquery={query}\n\n")
+        if query_type == "cocktail_name":
+            # print("\n\nNEW QUERY - TYPE 1\n\n")
+            results = json_drink_search(query)
+        elif query_type == "cocktail_ingredient":
+            # print("\n\nNEW QUERY - TYPE 2\n\n")
+            results = json_ingredient_search(query)
+        elif query_type == "cocktail_id":
+            # print("\n\nNEW QUERY - TYPE 3\n\n")
+            results = json_drink_ID(query)
 
-        if query_type == "name":
-            results = json_drink_search(query)['drinks']
-        elif query_type == "ingredient":
-            results = json_ingredient_search(query)['ingredients']
-        elif query_type == "id":
-            results = json_drink_ID(query)['drinks']
+        titles = []
+        for drink in results['drinks']:
+            titles.append(drink['strDrink'])
 
-        cards = ''
-        cards += "test"
-        # for result in results:
-        #     cards += '<div class="card">'
-        #     cards += '<img class="card-img-top" src="'+ cocktail_img +'" alt="Card image cap">'  
-        #     cards += '<div class="card-body">'
-        #     cards += '<h5 class="card-title">' + result['strDrink'] + '</h5>'
-        #     cards += '<p class="card-text">' + result['strInstructions'] + '</p>'
-        #     cards += '</div>'
-        #     cards += '</div>'
+        cards = [{"title": title, "description": "This is a card description."} for title in titles]
         return render_template('index.html', cards=cards)
     return render_template('index.html')
 
@@ -81,7 +109,7 @@ def show_ingredient(ingredient_name):
 
 # JSON RESPONSES
 @app.route('/json/drinks')
-def json_json():
+def json_all_drinks():
     return search_cocktail_by_name("")
 
 @app.route('/json/drink_name/<name>')

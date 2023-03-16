@@ -19,9 +19,9 @@
         <div class="form-group">
           <label for="search_option">Search option:</label>
           <select class="form-control" id="search_option" name="search_option">
-            <option value="name">Cocktail name</option>
-            <option value="ingredient">Ingredient name</option>
-            <option value="id">Cocktail ID</option>
+            <option value="cocktail_name">Cocktail name</option>
+            <option value="cocktail_ingredient">Ingredient name</option>
+            <option value="cocktail_id">Cocktail ID</option>
           </select>
         </div>
         <div class="form-group">
@@ -29,19 +29,25 @@
           <input type="text" class="form-control" id="search_term" name="search_term">
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
-        <button type="submit" class="btn btn-primary">Random Cocktail</button>
+        <button type="submit" class="btn btn-secondary">Random Cocktail</button>
       </form>
-    
+
     <div class="container mt-5">
-        <!-- <h2>Results:</h2> -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card-deck mt-3">
-                    <!-- Bootstrap cards will be generated here -->
-                </div>
+      <div class="row">
+        {% for card_data in cards %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ card_data.title }}</h5>
+              <p class="card-text">{{ card_data.description }}</p>
+              <a href="#" class="btn btn-secondary btn-sm">Learn More</a>
             </div>
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
+
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
