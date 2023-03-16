@@ -7,12 +7,6 @@
   </head>
   <body>
   
-    <a href="/json/drinks">All drinks (JSON)</a><br>
-    <a href="/json/drink_name/margarita">drink search {margarita} (JSON)</a><br>
-    <a href="/json/ingredient_name/vodka">ingredient search {vodka} (JSON)</a><br>
-    <a href="/json/drink_ID/11007">drink search by ID {11007} (JSON)</a><br>
-    <a href="/json/drink/random">random drink search (JSON)</a><br>
-
     <div class="container mt-5">
       <h1 class="mb-4">CocktailDB Search</h1>
       <form action="/" method="POST">
@@ -28,26 +22,46 @@
           <label for="search_term">Search term:</label>
           <input type="text" class="form-control" id="search_term" name="search_term">
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-        <button type="submit" class="btn btn-secondary">Random Cocktail</button>
+
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        <button type="submit" class="btn btn-secondary btn-sm">Random Cocktail</button>
+
+        <a href="/json/drink/random" class="btn btn-secondary btn-sm">Random Cocktail</a>
+        <a href="/json/drinks" class="btn btn-secondary btn-sm">JSON all drinks</a>
+        <a href="/json/ingredient_name/vodka" class="btn btn-secondary btn-sm">JSON drinks by name</a>
+        <a href="/json/drink_ID/11007" class="btn btn-secondary btn-sm">JSON drinks by ID</a>
+        <a href="/json/drink/random" class="btn btn-secondary btn-sm">JSON random drink</a>
+        <a href="/json/ingredient_name/vodka" class="btn btn-secondary btn-sm">JSON ingredient by ID</a>
       </form>
 
-    <div class="container mt-5">
-      <div class="row">
-        {% for card_data in cards %}
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ card_data.title }}</h5>
-              <p class="card-text">{{ card_data.description }}</p>
-              <a href="#" class="btn btn-secondary btn-sm">Learn More</a>
+      <div class="container mt-5">
+        <div class="row">
+          {% if drink_cards %}
+            {% for card_data in cards %}
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <img class="card-img-top" src="{{ card_data.img_url }}" alt="{{ card_data.title }}">
+                <div class="card-body">
+                  <h5 class="card-title">{{ card_data.title }}</h5>
+                  <a href="/drink_ID/{{ card_data.id }}" class="btn btn-secondary btn-sm">Learn More</a>
+                </div>
+              </div>
             </div>
-          </div>
+            {% endfor %}
+          {% else %}
+            {% for card_data in cards %}
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ card_data.title }}</h5>
+                  <a href="/ingredient_ID/{{ card_data.id }}" class="btn btn-secondary btn-sm">Learn More</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
         </div>
-        {% endfor %}
       </div>
-    </div>
-
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
