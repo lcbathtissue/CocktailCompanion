@@ -14,6 +14,8 @@ To install the dependencies, run:
 
 pip install flask requests jsonify
 
+## Usage
+
 Usage:
 To run the app, navigate to the project directory and run:
 
@@ -21,16 +23,16 @@ python CocktailCompanion.py
 
 This will start the Flask server and you can access the app by visiting http://localhost:5000/ in your web browser.
 
-Home Page:
+## Home Page
 The home page allows users to search for cocktails by name, ingredient, or ID. Users can select their search type from a dropdown menu and enter their search term in the input field.
 
-Drink Page:
+## Drink Page
 The drink page shows the details of a particular drink, identified by its ID.
 
-Ingredient Page:
+## Ingredient Page
 The ingredient page shows the details of a particular ingredient, identified by its name.
 
-JSON Endpoints:
+## JSON Endpoints
 The app also provides JSON endpoints for the search results:
 
 /json/drinks: returns a list of all drinks
@@ -39,5 +41,5 @@ The app also provides JSON endpoints for the search results:
 /json/drink_ID/<ID>: returns the details of the drink with the given ID
 /json/drink/random: returns the details of a random drink
 
-License:
+## License
 This app is licensed under the MIT license. See LICENSE for more details.
