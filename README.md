@@ -1,94 +1,43 @@
-[Video - MySQL deploying](https://www.youtube.com/watch?v=) <br>
-[Video - Deploying and Executing, Binary Calculator Application](https://www.youtube.com/watch?v=_)
+# Cocktail Search App
 
-# THIS IS AN EXAMPLE README FROM ANOTHER REPO
-# MINI HACKATHON - GROUP 15
-This project demonstrates the ability to work with binary numbers in Java, including performing basic arithmetic operations on them. The program includes a Binary class with a constructor that stores a binary number as a String and truncates any leading zeros. It also includes methods such as getValue() to return the binary number as a string and add() to perform a bitwise add on two Binary objects and return a new Binary object representing the result.
+This is a Flask-based web app that allows users to search for cocktails by name, ingredient, or ID. The app uses data from the 'Cocktail DB' API.
 
-The project also includes a JUnit test class, BinaryTest.java, that tests the functionality of the Binary class and its methods.
+## Dependencies
 
-## Getting Started
+The app requires the following dependencies:
 
-These instructions will guide you through deploying the Binary Calculator app using Kubernetes on Google Cloud Platform.
+* Flask
+* Requests
+* Jsonify
 
-### Prerequisites
+To install the dependencies, run:
 
-- Google Cloud Platform account
-- Kubernetes CLI (kubectl) installed
-- Docker installed
+pip install flask requests jsonify
 
-### Deploying using commands
+Usage:
+To run the app, navigate to the project directory and run:
 
-Clone the repository to your local machine:<br>
-`git clone https://github.com/<username>/BinaryCalculator.git`
+python CocktailCompanion.py
 
-Navigate to the project directory:<br>
-`cd BinaryCalculator`
+This will start the Flask server and you can access the app by visiting http://localhost:5000/ in your web browser.
 
-Compile and package the project using Maven:<br>
-`mvn clean package`
+Home Page:
+The home page allows users to search for cocktails by name, ingredient, or ID. Users can select their search type from a dropdown menu and enter their search term in the input field.
 
-Build the Docker image and push it to Google Cloud Registry:<br>
-`docker build -t gcr.io/<Project-ID>/binarycalculator .` <br>
-`docker push gcr.io/<Project-ID>/binarycalculator`
+Drink Page:
+The drink page shows the details of a particular drink, identified by its ID.
 
-Create a Kubernetes deployment:<br>
-`kubectl create deployment binarycalculator-deployment --image gcr.io/<Project-ID>/binarycalculator --port=8080`
+Ingredient Page:
+The ingredient page shows the details of a particular ingredient, identified by its name.
 
-Expose the deployment as a LoadBalancer service:<br>
-`kubectl expose deployment binarycalculator-deployment --type=LoadBalancer --name=binarycalculator-service`
+JSON Endpoints:
+The app also provides JSON endpoints for the search results:
 
-Wait for the external IP address to be assigned to the service:<br>
-`kubectl get services --watch` <br>
-Note the external IP address assigned to the service.
+/json/drinks: returns a list of all drinks
+/json/drink_name/<name>: returns the details of drinks matching the given name
+/json/ingredient_name/<name>: returns the details of ingredients matching the given name
+/json/drink_ID/<ID>: returns the details of the drink with the given ID
+/json/drink/random: returns the details of a random drink
 
-Access the Binary Calculator app using the external IP address:<br>
-`http://<External-IP-Address>:8080/`
-
-### Deploying using YAML file
-
-Clone the repository to your local machine:<br>
-`git clone https://github.com/<username>/BinaryCalculator.git`
-
-Navigate to the project directory:<br>
-`cd BinaryCalculator`
-
-Compile and package the project using Maven:<br>
-`mvn clean package`
-
-Build the Docker image and push it to Google Cloud Registry:<br>
-`docker build -t gcr.io/<Project-ID>/binarycalculator .` <br>
-`docker push gcr.io/<Project-ID>/binarycalculator`
-
-Deploy the app using the binary-calculator.yaml file:<br>
-`kubectl apply -f binary-calculator.yaml`
-
-Wait for the external IP address to be assigned to the service:<br>
-`kubectl get services --watch` <br>
-Note the external IP address assigned to the service.
-
-Access the Binary Calculator app using the external IP address:<br>
-`http://<External-IP-Address>:8080/`
-
-
-## Built With
-
-- [Maven](https://maven.apache.org/) - Dependency Management
-- [JUnit](https://junit.org/) - Testing Framework
-- [Tomcat](https://tomcat.apache.org/) - Web Server and Servlet Container
-- [Docker](https://www.docker.com/) - Containerization Platform
-- [Google Cloud Platform](https://cloud.google.com/) - Cloud Computing Platform
-- [Kubernetes](https://kubernetes.io/) - Container Orchestration Platform
-
-## Members
-
-- **John Howe** - *100785128*
-- **Sarah Wedge** - *100785532*
-- **Alden O’Cain** - *100558599*
-- **Johnathon Tannous** - *100707434*
-- **Tal Marianovski** - *100700316*
-- **Thomas Menegotti** - *100750648*
-
-## License
-
-This project is licensed under the MIT License
+License:
+This app is licensed under the MIT license. See LICENSE for more details.
